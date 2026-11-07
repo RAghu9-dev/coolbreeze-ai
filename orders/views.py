@@ -2,7 +2,15 @@ from django.shortcuts import render, get_object_or_404
 from .models import Order, RefundRequest
 from django.contrib.auth.decorators import login_required
 from support.models import Conversation
+from django.views.decorators.http import require_GET
+from django.http import JsonResponse
 
+@require_GET
+def test_view(request):
+    return JsonResponse({
+        "status": "success",
+        "message": "CoolBreeze AI backend is working!"
+    })
 
 @login_required
 def orders_list(request):

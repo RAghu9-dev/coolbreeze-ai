@@ -132,12 +132,36 @@ LOGIN_REDIRECT_URL = '/orders/'
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
 
-ANTHROPIC_API_KEY=config("ANTHROPIC_API_KEY")
-ANTHROPIC_MODEL=config("ANTHROPIC_MODEL")
+
+GEMINI_API_KEY = config("GEMINI_API_KEY", default="")
+GEMINI_MODEL = config("GEMINI_MODEL", default="gemini-3.5-flash-lite")
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
 
-CSRF_TRUSTED_ORIGINS = {
-    "https://djangoaiemployees-production.up.railway.app"
-}
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in config("CSRF_TRUSTED_ORIGINS", default="").split(",")
+    if origin.strip()
+]
+
+# Production security settings
+if not DEBUG:
+
+    # Secure cookies over HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    # Prevent MIME-type sniffing
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    # Prevent clickjacking
+    X_FRAME_OPTIONS = "DENY"
+
+    # Browser security policy
+    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
+    # Enable HSTS after HTTPS deployment is verified
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
