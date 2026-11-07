@@ -28,7 +28,11 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = [
+    "coolbreeze-ai-cpgw.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -143,11 +147,8 @@ GEMINI_MODEL = config("GEMINI_MODEL", default="gemini-3.5-flash-lite")
 STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
 
 CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in config("CSRF_TRUSTED_ORIGINS", default="").split(",")
-    if origin.strip()
+    "https://coolbreeze-ai-cpgw.onrender.com",
 ]
-
 # Production security settings
 if not DEBUG:
 
